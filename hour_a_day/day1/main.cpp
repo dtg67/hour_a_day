@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <omp.h>
+#include <algorithm>
+#include <stdlib.h>
 
 int main(int argc, char *argv[]){
     int id;
@@ -17,7 +19,8 @@ int main(int argc, char *argv[]){
     {
         id = omp_get_thread_num();
         a = id + 1;
-        std::cout << "Thread #" << id << " has a = " << std::endl;
+#pragma omp barrier
+        std::cout << "Thread #" << id << " has a = " << a  <<std::endl;
     }
     std::cout << "Final sum is a = " << a << std::endl;
     return 0;
