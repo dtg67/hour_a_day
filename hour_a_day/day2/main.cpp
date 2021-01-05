@@ -8,6 +8,7 @@
 #include <Eigen/Core>
 #include <cmath>
 
+
 int main(int argc, char **argv){
     const double g = -9.8; //m/s**2
     const double drag = 1; //N
