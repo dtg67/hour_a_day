@@ -7,6 +7,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <iomanip>
+#include <omp.h>
 
 int cubic(){
     return rand() % 6 + 1;
@@ -15,18 +16,25 @@ int cubic(){
 int pyramidal(){
     return rand() % 4 + 1;
 }
-
 int main(int argc,char **argv){
-    int id;
-    srand (time(NULL));
-    unsigned long int N = 1000000;
-    unsigned long int count = 0;
-
-    for(unsigned long int i = 0; i < N; i++){
-        if(cubic() > pyramidal()){count++;}
+    srand (67);
+    unsigned long long int N = 1000000;
+    unsigned long long int a[N];
+    unsigned long long int sum = 0;
+#pragma omp parallel for
+    for(unsigned long long int i = 0; i < N; i++){
+        if (cubic() > pyramidal()) {
+            a[i] = 1;
+        }
+        else {
+            a[i] = 0;
+        }
     }
+#pragma omp parallel for reduction(+:sum)
+        for(unsigned long long int i = 0; i < N; i++){
+            sum += a[i];
+        }
 
-    std::cout << 1.0*count/N << std::endl;
-    std::setprecision(7);
+    std::cout << 1.0*sum/N << std::endl;
     return 0;
 }
